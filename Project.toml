@@ -1,0 +1,7 @@
+name = "DepTree"
+authors = ["pg999w <pg999w@gmail.com>"]
+uuid = "9eb5382b-762c-48ca-8139-e736883fe800"
+version = "0.1.0"
+
+[compat]
+julia = "1.4"
