@@ -2,7 +2,15 @@
 
 Show dependency tree of project
 
-Example:
+## Installation
+
+In julia REPL:
+
+```
+]add https://github.com/peng1999/DepTree.jl
+```
+
+Then call `DepTree.tree`
 
 ```julia
 julia> using DepTree
