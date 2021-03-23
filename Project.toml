@@ -1,7 +1,11 @@
 name = "DepTree"
-authors = ["pg999w <pg999w@gmail.com>"]
 uuid = "9eb5382b-762c-48ca-8139-e736883fe800"
+authors = ["pg999w <pg999w@gmail.com>"]
 version = "0.1.0"
+
+[deps]
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+UUIDs = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
 
 [compat]
 julia = "1.4"
