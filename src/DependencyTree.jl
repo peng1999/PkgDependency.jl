@@ -1,4 +1,4 @@
-module DepTree
+module DependencyTree
 
 using Pkg
 using UUIDs
