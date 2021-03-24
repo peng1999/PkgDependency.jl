@@ -4,11 +4,11 @@ using Pkg
 using UUIDs
 
 """
-    tree()
+    list()
 
-Show dependencies of current project.
+Show dependency tree of current project.
 """
-function tree()
+function list()
     project = Pkg.project()
     name = something(project.name, "Unnamed Project")
     version = something(project.version, "")
@@ -22,22 +22,22 @@ struct CustomInfo
 end
 
 """
-    tree(uuid::UUID)
+    list(uuid::UUID)
 
-Show dependencies of a package by UUID
+Show dependency tree of a package identified by UUID
 """
-function tree(uuid::UUID)
+function list(uuid::UUID)
     printtree(CustomInfo(Dict(nothing => uuid)))
 end
 
 """
-    tree(name::AbstractString)
+    list(name::AbstractString)
 
-Show dependencies of a package by name
+Show dependencies of a package identified by name
 """
-function tree(name::AbstractString)
+function list(name::AbstractString)
     dep = Pkg.project().dependencies
-    tree(dep[name])
+    list(dep[name])
 end
 
 function printtree(info; graph=Pkg.dependencies(), indent=0, listed=Set{UUID}())
