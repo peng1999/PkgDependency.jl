@@ -1,5 +1,5 @@
 # PkgDependency.jl
 
 ```@docs
-PkgDependency.list
+PkgDependency.tree
 ```
