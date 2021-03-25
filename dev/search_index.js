@@ -1,0 +1,3 @@
+var documenterSearchIndex = {"docs":
+[{"location":"#DependencyTree.jl","page":"DependencyTree.jl","title":"DependencyTree.jl","text":"","category":"section"},{"location":"","page":"DependencyTree.jl","title":"DependencyTree.jl","text":"DependencyTree.list","category":"page"},{"location":"#DependencyTree.list","page":"DependencyTree.jl","title":"DependencyTree.list","text":"list()\n\nShow dependency tree of current project.\n\n\n\n\n\nlist(uuid::UUID)\n\nShow dependency tree of a package identified by UUID\n\n\n\n\n\nlist(name::AbstractString)\n\nShow dependencies of a package identified by name\n\n\n\n\n\n","category":"function"}]
+}
