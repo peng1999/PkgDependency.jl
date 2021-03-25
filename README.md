@@ -1,4 +1,4 @@
-# DepTree.jl
+# DependencyTree.jl
 
 Show dependency tree of project or package.
 
