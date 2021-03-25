@@ -1,14 +1,14 @@
-module DependencyTree
+module PkgDependency
 
 using Pkg
 using UUIDs
 
 """
-    list()
+    tree()
 
-Show dependency tree of current project.
+Print dependency tree of current project.
 """
-function list()
+function tree()
     project = Pkg.project()
     name = something(project.name, "Unnamed Project")
     version = something(project.version, "")
@@ -22,22 +22,22 @@ struct CustomInfo
 end
 
 """
-    list(uuid::UUID)
+    tree(uuid::UUID)
 
-Show dependency tree of a package identified by UUID
+Print dependency tree of a package identified by UUID
 """
-function list(uuid::UUID)
+function tree(uuid::UUID)
     printtree(CustomInfo(Dict(nothing => uuid)))
 end
 
 """
-    list(name::AbstractString)
+    tree(name::AbstractString)
 
-Show dependencies of a package identified by name
+Print dependency tree of a package identified by name
 """
-function list(name::AbstractString)
+function tree(name::AbstractString)
     dep = Pkg.project().dependencies
-    list(dep[name])
+    tree(dep[name])
 end
 
 function printtree(info; graph=Pkg.dependencies(), indent=0, listed=Set{UUID}())

@@ -1,5 +1,5 @@
-using Documenter, DependencyTree
+using Documenter, PkgDependency
 
-makedocs(sitename="DependencyTree.jl")
+makedocs(sitename="PkgDependency.jl")
 
-deploydocs(repo="github.com/peng1999/DependencyTree.jl.git")
+deploydocs(repo="github.com/peng1999/PkgDependency.jl.git")

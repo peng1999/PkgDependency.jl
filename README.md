@@ -1,20 +1,22 @@
-# DependencyTree.jl
+# PkgDependency.jl
 
-Show dependency tree of project or package.
+Print dependency tree of a project or package.
 
 ## Installation
 
-In julia REPL:
+In julia REPL, type `]` to enter package manager:
 
 ```
-]add https://github.com/peng1999/DependencyTree.jl
+pkg> add https://github.com/peng1999/PkgDependency.jl
 ```
 
-Then call `DependencyTree.tree`
+## Usage
+
+Call `PkgDependency.tree`
 
 ```julia
-julia> using DependencyTree
-julia> DependencyTree.list("CSV")
+julia> using PkgDependency
+julia> PkgDependency.list("CSV")
 CSV v0.8.3
     Tables v1.3.1
         DataAPI v1.5.1
