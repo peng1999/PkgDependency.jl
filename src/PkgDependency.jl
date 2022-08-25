@@ -2,6 +2,8 @@ module PkgDependency
 
 using Pkg
 using UUIDs
+using OrderedCollections
+import Term: Tree
 
 """
     tree()
@@ -12,13 +14,8 @@ function tree()
     project = Pkg.project()
     name = something(project.name, "Unnamed Project")
     version = something(project.version, "")
-    println("$name $version")
 
-    printtree(project, indent=4)
-end
-
-struct CustomInfo
-    dependencies::Dict{Nothing, UUID}
+    Tree(builddict(project), title="$name v$version")
 end
 
 """
@@ -27,7 +24,11 @@ end
 Print dependency tree of a package identified by UUID
 """
 function tree(uuid::UUID)
-    printtree(CustomInfo(Dict(nothing => uuid)))
+    project = Pkg.dependencies()[uuid]
+    name = something(project.name, "Unnamed Project")
+    version = something(project.version, "")
+
+    Tree(builddict(project), title="$name v$version")
 end
 
 """
@@ -40,22 +41,28 @@ function tree(name::AbstractString)
     tree(dep[name])
 end
 
-function printtree(info; graph=Pkg.dependencies(), indent=0, listed=Set{UUID}())
+# returns dependencies of info as OrderedDict, or nothing when no dependencies
+function builddict(info; graph=Pkg.dependencies(), listed=Set{UUID}())
     deps = info.dependencies
+    children = OrderedDict()
     for uuid in values(deps)
         subpkg = graph[uuid]
         if isnothing(subpkg.version)
             continue
         end
-        prefix = " " ^ indent
         postfix = uuid ∈ listed ? "(*)" : ""
-        println("$prefix$(subpkg.name) v$(subpkg.version) $postfix")
+        name = "$(subpkg.name) v$(subpkg.version) $postfix"
 
+        child = nothing
         if uuid ∉ listed
             push!(listed, uuid)
-            printtree(subpkg, graph=graph, indent=indent+4, listed=listed)
+            child = builddict(subpkg, graph=graph, listed=listed)
         end
+        push!(children, name => child)
     end
+    length(children) == 0 ? nothing : children
 end
 
 end
+
+# vim: sw=4
