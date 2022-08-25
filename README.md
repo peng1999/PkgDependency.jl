@@ -14,22 +14,35 @@ pkg> add https://github.com/peng1999/PkgDependency.jl
 
 ## Usage
 
-Call `PkgDependency.tree`. Circular dependencies are marked as `(*)`.
+Call `PkgDependency.tree`. Repeated dependencies are marked as `(*)`.
 
 ```julia
 julia> using PkgDependency
 julia> PkgDependency.tree("CSV")
-CSV v0.8.3
-    Tables v1.3.1
-        DataAPI v1.5.1
-        IteratorInterfaceExtensions v1.0.0
-        DataValueInterfaces v1.0.0
-        TableTraits v1.0.0
-            IteratorInterfaceExtensions v1.0.0 (*)
-    Parsers v1.0.15
-    PooledArrays v1.1.0
-        DataAPI v1.5.1 (*)
-    SentinelArrays v1.2.16
+ CSV v0.10.4
+━━━━━━━━━━━━━
+      │
+      ├── InlineStrings v1.1.4
+      │   └── Parsers v2.3.2
+      ├── PooledArrays v1.4.2
+      │   └── DataAPI v1.10.0
+      ├── WeakRefStrings v1.4.2
+      │   ├── DataAPI v1.10.0 (*)
+      │   ├── InlineStrings v1.1.4 (*)
+      │   └── Parsers v2.3.2 (*)
+      ├── CodecZlib v0.7.0
+      │   └── TranscodingStreams v0.9.8
+      ├── Tables v1.7.0
+      │   ├── DataAPI v1.10.0 (*)
+      │   ├── OrderedCollections v1.4.1
+      │   ├── IteratorInterfaceExtensions v1.0.0
+      │   ├── DataValueInterfaces v1.0.0
+      │   └── TableTraits v1.0.1
+      │       └── IteratorInterfaceExtensions v1.0.0 (*)
+      ├── FilePathsBase v0.9.19
+      │   └── Compat v4.2.0
+      ├── Parsers v2.3.2 (*)
+      └── SentinelArrays v1.3.13
 ```
 
 ## Contribution
