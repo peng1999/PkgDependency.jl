@@ -38,6 +38,9 @@ Print dependency tree of a package identified by name
 """
 function tree(name::AbstractString)
     dep = Pkg.project().dependencies
+    if !haskey(dep, name)
+        throw(ArgumentError("\"$name\" not found in dependencies. Please install this package and retry."))
+    end
     tree(dep[name])
 end
 
