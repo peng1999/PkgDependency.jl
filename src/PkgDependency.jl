@@ -60,7 +60,7 @@ function builddict(info; graph=Pkg.dependencies(), listed=Set{UUID}())
         end
         push!(children, name => child)
     end
-    length(children) == 0 ? nothing : children
+    children
 end
 
 end
