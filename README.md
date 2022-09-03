@@ -9,7 +9,7 @@ Print dependency tree of a project or package.
 In julia REPL, type `]` to enter package manager:
 
 ```
-pkg> add https://github.com/peng1999/PkgDependency.jl
+pkg> add PkgDependency
 ```
 
 ## Usage
