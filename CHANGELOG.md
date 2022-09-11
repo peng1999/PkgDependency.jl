@@ -9,13 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `tree(...; reverse=true)` to get reverse dependencies. ([#5])
+
 ### Changed
 
-- `tree()` will throw a custom error when package is not found. (#4)
+- `tree()` will throw a custom error when package is not found. ([#4])
 
 ### Fixed
 
-- Error with packages with empty dependency. (#6)
+- Error with packages with empty dependency. ([#6])
 
 ## [0.1.0] - 2022-09-01
 
@@ -25,3 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]: https://github.com/peng1999/PkgDependency.jl/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/peng1999/PkgDependency.jl/releases/tag/v0.1.0
+
+[#4]: https://github.com/peng1999/PkgDependency.jl/issues/4
+[#5]: https://github.com/peng1999/PkgDependency.jl/issues/5
+[#6]: https://github.com/peng1999/PkgDependency.jl/issues/6

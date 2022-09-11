@@ -19,29 +19,42 @@ function tree()
 end
 
 """
-    tree(uuid::UUID)
+    tree(uuid::UUID; reverse=false)
 
 Print dependency tree of a package identified by UUID
 """
-function tree(uuid::UUID)
-    project = Pkg.dependencies()[uuid]
+function tree(uuid::UUID; reverse=false)
+    graph = Pkg.dependencies()
+    if reverse
+        revgraph = Pkg.dependencies()
+        for info in values(revgraph)
+            empty!(info.dependencies)
+        end
+        for info in graph
+            for dep in info[2].dependencies
+                push!(revgraph[dep[2]].dependencies, info[2].name=>info[1])
+            end
+        end
+        graph = revgraph
+    end
+    project = graph[uuid]
     name = something(project.name, "Unnamed Project")
     version = something(project.version, "")
 
-    Tree(builddict(project), title="$name v$version")
+    Tree(builddict(project, graph=graph), title="$name v$version")
 end
 
 """
-    tree(name::AbstractString)
+    tree(name::AbstractString; reverse=false)
 
-Print dependency tree of a package identified by name
+Print dependency tree of a package identified by name. Pass `reverse=true` to get a reverse dependency.
 """
-function tree(name::AbstractString)
+function tree(name::AbstractString; kwargs...)
     dep = Pkg.project().dependencies
     if !haskey(dep, name)
         throw(ArgumentError("\"$name\" not found in dependencies. Please install this package and retry."))
     end
-    tree(dep[name])
+    tree(dep[name]; kwargs...)
 end
 
 # returns dependencies of info as OrderedDict, or nothing when no dependencies
