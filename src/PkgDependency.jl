@@ -50,11 +50,12 @@ end
 Print dependency tree of a package identified by name. Pass `reverse=true` to get a reverse dependency.
 """
 function tree(name::AbstractString; kwargs...)
-    dep = Pkg.project().dependencies
-    if !haskey(dep, name)
+    dep = Pkg.dependencies()
+    uuid = findfirst(x -> x.name == name, dep)
+    if uuid == nothing
         throw(ArgumentError("\"$name\" not found in dependencies. Please install this package and retry."))
     end
-    tree(dep[name]; kwargs...)
+    tree(uuid; kwargs...)
 end
 
 # returns dependencies of info as OrderedDict, or nothing when no dependencies
