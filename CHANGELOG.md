@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2022-09-17
+
 ### Added
 
 - `tree(...; reverse=true)` to get reverse dependencies. ([#5])
@@ -26,7 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `tree()` function to display dependency tree of packages.
 
-[Unreleased]: https://github.com/peng1999/PkgDependency.jl/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/peng1999/PkgDependency.jl/compare/v0.2.0...HEAD
+[0.1.0]: https://github.com/peng1999/PkgDependency.jl/releases/tag/v0.2.0
 [0.1.0]: https://github.com/peng1999/PkgDependency.jl/releases/tag/v0.1.0
 
 [#4]: https://github.com/peng1999/PkgDependency.jl/issues/4

@@ -12,6 +12,10 @@ In julia REPL, type `]` to enter package manager:
 pkg> add PkgDependency
 ```
 
+## Changelog
+
+See [CHANGELOG.md](./README.md).
+
 ## Usage
 
 Call `PkgDependency.tree`. Repeated dependencies are marked as `(*)`.
