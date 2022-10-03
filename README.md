@@ -14,7 +14,7 @@ pkg> add PkgDependency
 
 ## Changelog
 
-See [CHANGELOG.md](./README.md).
+See [CHANGELOG.md](./CHANGELOG.md).
 
 ## Usage
 
