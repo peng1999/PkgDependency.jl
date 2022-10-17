@@ -12,10 +12,15 @@ Print dependency tree of current project.
 """
 function tree()
     project = Pkg.project()
-    name = something(project.name, "Unnamed Project")
-    version = something(project.version, "")
+    if project.ispackage
+	name = something(project.name, "Unnamed Project")
+	version = isnothing(project.version) ? "" : "v$(project.version)"
+    else
+	name = "Workspace"
+	version = ""
+    end
 
-    Tree(builddict(project), title="$name v$version")
+    Tree(builddict(project), title="$name $version")
 end
 
 """
