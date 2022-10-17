@@ -1,4 +1,4 @@
-name: Documentation
+name: CI Pipeline
 
 on:
   push:
@@ -19,7 +19,6 @@ jobs:
       - uses: julia-actions/julia-runtest@v1
         with:
           annotate: true
-      - name: Build and deploy
+      - uses: julia-actions/julia-docdeploy@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # For authentication with GitHub Actions token
-        run: julia --project=docs/ docs/make.jl
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
