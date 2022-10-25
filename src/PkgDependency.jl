@@ -14,14 +14,14 @@ end
 
 Print dependency tree of current project.
 """
-function tree(;compat=false)
+function tree(; compat=false)
     project = Pkg.project()
     if project.ispackage
-	name = something(project.name, "Unnamed Project")
-	version = isnothing(project.version) ? "" : "v$(project.version)"
+        name = something(project.name, "Unnamed Project")
+        version = isnothing(project.version) ? "" : "v$(project.version)"
     else
-	name = "Workspace"
-	version = ""
+        name = "Workspace"
+        version = ""
     end
 
     Tree(builddict(project.uuid, project; compat), title="$name $version")
@@ -41,7 +41,7 @@ function tree(uuid::UUID; reverse=false, compat=false)
         end
         for info in graph
             for dep in info[2].dependencies
-                push!(revgraph[dep[2]].dependencies, info[2].name=>info[1])
+                push!(revgraph[dep[2]].dependencies, info[2].name => info[1])
             end
         end
         graph = revgraph
@@ -90,7 +90,7 @@ function compatinfo(uuid::UUID)
 end
 
 # returns dependencies of info as OrderedDict, or nothing when no dependencies
-function builddict(uuid::Union{Nothing, UUID}, info; graph=Pkg.dependencies(), listed=Set{UUID}(), compat=false)
+function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), listed=Set{UUID}(), compat=false)
     deps = info.dependencies
     compats = compat && !isnothing(uuid) ? compatinfo(uuid) : Dict()
     children = OrderedDict()
