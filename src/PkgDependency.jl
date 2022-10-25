@@ -89,6 +89,10 @@ function compatinfo(uuid::UUID)
     Pkg.Types.read_package(manifest).compat
 end
 
+# compatibility layer for julia 1.6
+compatstr(c::String) = c
+compatstr(c::Any) = c.str
+
 # returns dependencies of info as OrderedDict, or nothing when no dependencies
 function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), listed=Set{UUID}(), compat=false)
     deps = info.dependencies
@@ -102,7 +106,7 @@ function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), li
         postfix = uuid ∈ listed ? " (*)" : ""
         cinfo = get(compats, subpkg.name, nothing)
         if !isnothing(cinfo)
-            postfix = postfix * " compat=\"$(cinfo.str)\""
+            postfix = postfix * " compat=\"$(compatstr(cinfo))\""
         end
         name = "$(subpkg.name) v$(subpkg.version)$postfix"
 
