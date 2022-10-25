@@ -5,7 +5,9 @@ using UUIDs
 using OrderedCollections
 import Term: Tree, Theme, set_theme
 
-set_theme(Theme(tree_max_width=-1))
+function __init__()
+    set_theme(Theme(tree_max_width=-1))
+end
 
 """
     tree(;compat=false)
