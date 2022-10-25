@@ -65,6 +65,15 @@ function tree(name::AbstractString; kwargs...)
     tree(uuid; kwargs...)
 end
 
+function locate_project_file(env::String)
+    for proj in ("Project.toml", "JuliaProject.toml")
+        project_file = joinpath(env, proj)
+        if isfile(project_file)
+            return project_file
+        end
+    end
+end
+
 function compatinfo(uuid::UUID)
     project = Pkg.project()
     if project.uuid == uuid
@@ -73,7 +82,7 @@ function compatinfo(uuid::UUID)
         name = Pkg.dependencies()[uuid].name
         pkgid = Base.PkgId(uuid, name)
         path = abspath(Base.locate_package(pkgid), "..", "..")
-        manifest = Base.locate_project_file(path)
+        manifest = locate_project_file(path)
     end
     Pkg.Types.read_package(manifest).compat
 end
