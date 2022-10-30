@@ -8,17 +8,35 @@ on:
   pull_request:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+        - julia-version: 'nightly'
+          os: ubuntu-latest
+        - julia-version: '1.6'
+          os: ubuntu-latest
+        - julia-version: '1.8'
+          os: windows-latest
+        - julia-version: '1.8'
+          os: macOS-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: julia-actions/setup-julia@latest
+      - uses: julia-actions/setup-julia@v1
         with:
-          version: '1.6'
+          version: ${{ matrix.julia-version }}
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
         with:
           annotate: true
+  doc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: '1.8'
       - uses: julia-actions/julia-docdeploy@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
