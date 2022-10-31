@@ -1,7 +1,7 @@
 name = "PkgDependency"
 uuid = "9eb5382b-762c-48ca-8139-e736883fe800"
 authors = ["pg999w <pg999w@gmail.com>"]
-version = "0.2.0"
+version = "0.3.0"
 
 [deps]
 OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
