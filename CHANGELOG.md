@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Option to show compat info
+- Option to show compat info ([#7])
 
 ### Fixed
 
@@ -43,3 +43,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#4]: https://github.com/peng1999/PkgDependency.jl/issues/4
 [#5]: https://github.com/peng1999/PkgDependency.jl/issues/5
 [#6]: https://github.com/peng1999/PkgDependency.jl/issues/6
+[#7]: https://github.com/peng1999/PkgDependency.jl/issues/7
+
