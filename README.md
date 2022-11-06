@@ -4,6 +4,11 @@
 
 Print dependency tree of a project or package.
 
+Supported features include:
+
+- Reverse dependency tree
+- Compat info
+
 ## Installation
 
 In julia REPL, type `]` to enter package manager:
