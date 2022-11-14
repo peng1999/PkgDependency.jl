@@ -81,12 +81,10 @@ function compatinfo(uuid::UUID)
     if project.uuid == uuid
         manifest = project.path
     else
-        name = Pkg.dependencies()[uuid].name
-        pkgid = Base.PkgId(uuid, name)
-        path = abspath(Base.locate_package(pkgid), "..", "..")
+        path = Pkg.dependencies()[uuid].source
         manifest = locate_project_file(path)
     end
-    Pkg.Types.read_package(manifest).compat
+    isnothing(manifest) ? Dict() : Pkg.Types.read_package(manifest).compat
 end
 
 # compatibility layer for julia 1.6
