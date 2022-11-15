@@ -14,7 +14,7 @@ end
 
 Print dependency tree of current project.
 """
-function tree(; compat=false)
+function tree(; compat=false, show_link=false)
     project = Pkg.project()
     if project.ispackage
         name = something(project.name, "Unnamed Project")
@@ -24,7 +24,8 @@ function tree(; compat=false)
         version = ""
     end
 
-    Tree(builddict(project.uuid, project; compat), title="$name $version")
+    registries = !show_link ? nothing : Pkg.Operations.Context().registries
+    Tree(builddict(project.uuid, project; compat, registries), title="$name $version")
 end
 
 """
@@ -32,7 +33,7 @@ end
 
 Print dependency tree of a package identified by UUID
 """
-function tree(uuid::UUID; reverse=false, compat=false)
+function tree(uuid::UUID; reverse=false, compat=false, show_link=false)
     graph = Pkg.dependencies()
     if reverse
         revgraph = Pkg.dependencies()
@@ -50,7 +51,9 @@ function tree(uuid::UUID; reverse=false, compat=false)
     name = something(project.name, "Unnamed Project")
     version = something(project.version, "")
 
-    Tree(builddict(uuid, project; graph, compat), title="$name v$version")
+    # registries is used to find url
+    registries = !show_link ? nothing : Pkg.Operations.Context().registries
+    Tree(builddict(uuid, project; graph, compat, registries), title="$name v$version")
 end
 
 """
@@ -92,11 +95,22 @@ compatstr(c::String) = c
 compatstr(c::Any) = c.str
 
 # returns dependencies of info as OrderedDict, or nothing when no dependencies
-function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), listed=Set{UUID}(), compat=false)
+function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), listed=Set{UUID}(), compat=false, registries=nothing)
     deps = info.dependencies
     compats = compat && !isnothing(uuid) ? compatinfo(uuid) : Dict()
     children = OrderedDict()
+
     for uuid in values(deps)
+        # find link
+        if registries !== nothing
+            links = collect(Pkg.Operations.find_urls(registries, uuid))
+            if length(links) > 0
+                link = links[1]
+            else
+                link = ""
+            end
+	    end
+
         subpkg = graph[uuid]
         if isnothing(subpkg.version)
             continue
@@ -107,11 +121,14 @@ function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), li
             postfix = postfix * " compat=\"$(compatstr(cinfo))\""
         end
         name = "$(subpkg.name) v$(subpkg.version)$postfix"
+        if registries !== nothing && !isempty(link)
+            name *= " ($link)"
+        end
 
         child = nothing
         if uuid ∉ listed
             push!(listed, uuid)
-            child = builddict(uuid, subpkg; graph, listed, compat)
+            child = builddict(uuid, subpkg; graph, listed, compat, registries)
         end
         push!(children, name => child)
     end

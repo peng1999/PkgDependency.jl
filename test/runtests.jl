@@ -7,5 +7,6 @@ import Term: Tree
         @test PkgDependency.tree(; compat) isa Tree
         @test PkgDependency.tree("Term"; compat) isa Tree
         @test PkgDependency.tree("Term"; reverse=true, compat) isa Tree
+        @test PkgDependency.tree("Term"; compat, show_link=true) isa Tree
     end
 end
