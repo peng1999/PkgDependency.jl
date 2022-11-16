@@ -7,6 +7,10 @@ import Term: Tree
         @test PkgDependency.tree(; compat) isa Tree
         @test PkgDependency.tree("Term"; compat) isa Tree
         @test PkgDependency.tree("Term"; reverse=true, compat) isa Tree
-        @test PkgDependency.tree("Term"; compat, show_link=true) isa Tree
+        if VERSION < v"1.7"
+            @test_throws ErrorException PkgDependency.tree("Term"; compat, show_link=true) isa Tree
+        else
+            @test PkgDependency.tree("Term"; compat, show_link=true) isa Tree
+        end
     end
 end

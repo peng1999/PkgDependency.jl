@@ -24,7 +24,7 @@ function tree(; compat=false, show_link=false)
         version = ""
     end
 
-    registries = !show_link ? nothing : Pkg.Operations.Context().registries
+    registries = check_and_get_registries(; show_link)
     Tree(builddict(project.uuid, project; compat, registries), title="$name $version")
 end
 
@@ -52,7 +52,7 @@ function tree(uuid::UUID; reverse=false, compat=false, show_link=false)
     version = something(project.version, "")
 
     # registries is used to find url
-    registries = !show_link ? nothing : Pkg.Operations.Context().registries
+    registries = check_and_get_registries(; show_link)
     Tree(builddict(uuid, project; graph, compat, registries), title="$name v$version")
 end
 
@@ -68,6 +68,15 @@ function tree(name::AbstractString; kwargs...)
         throw(ArgumentError("\"$name\" not found in dependencies. Please install this package and retry."))
     end
     tree(uuid; kwargs...)
+end
+
+function check_and_get_registries(; show_link)
+    show_link || return nothing
+    @static if VERSION < v"1.7"
+        error("Sorry, your Julia version $(VERSION) is too old to use `show_link = true`, please upgrade your Julia version to v1.7 or higher.")
+    else
+        return Pkg.Operations.Context().registries
+    end
 end
 
 function locate_project_file(env::String)
