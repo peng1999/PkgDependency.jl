@@ -7,7 +7,8 @@ Print dependency tree of a project or package.
 Supported features include:
 
 - Reverse dependency tree
-- Compat info
+- Show compat info in tree
+- Show repo link in tree (needs at least Julia 1.7)
 
 ## Installation
 

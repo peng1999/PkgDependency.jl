@@ -10,9 +10,15 @@ function __init__()
 end
 
 """
-    tree(;compat=false)
+    tree(...; reverse=false, compat=false, show_link=false)
 
-Print dependency tree of current project.
+"""
+function tree end
+
+"""
+    tree(; kwargs...)
+
+Print dependency tree of current project. `reverse` kwarg is not supported in this method.
 """
 function tree(; compat=false, show_link=false)
     project = Pkg.project()
@@ -29,7 +35,7 @@ function tree(; compat=false, show_link=false)
 end
 
 """
-    tree(uuid::UUID; reverse=false, compat=false)
+    tree(uuid::UUID; kwargs...)
 
 Print dependency tree of a package identified by UUID
 """
@@ -57,9 +63,9 @@ function tree(uuid::UUID; reverse=false, compat=false, show_link=false)
 end
 
 """
-    tree(name::AbstractString; reverse=false, compat=false)
+    tree(name::AbstractString; kwargs...)
 
-Print dependency tree of a package identified by name. Pass `reverse=true` to get a reverse dependency, `compat=true` to get compat info.
+Print dependency tree of a package identified by name.
 """
 function tree(name::AbstractString; kwargs...)
     dep = Pkg.dependencies()
@@ -118,7 +124,7 @@ function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), li
             else
                 link = ""
             end
-	    end
+        end
 
         subpkg = graph[uuid]
         if isnothing(subpkg.version)
