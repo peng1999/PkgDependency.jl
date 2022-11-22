@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Option to show the repo link ([#11])
+
+### Fixed
+
+- Error when showing compat info of legacy packages
+
 ## [0.3.0] - 2022-10-31
 
 ### Added
@@ -47,4 +55,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#5]: https://github.com/peng1999/PkgDependency.jl/issues/5
 [#6]: https://github.com/peng1999/PkgDependency.jl/issues/6
 [#7]: https://github.com/peng1999/PkgDependency.jl/issues/7
+[#11]: https://github.com/peng1999/PkgDependency.jl/issues/11
 
