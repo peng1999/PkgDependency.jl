@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Option to show the repo link ([#11])
+- Option to not cut duplicate branches in tree ([#10])
 
 ### Fixed
 
@@ -55,5 +56,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#5]: https://github.com/peng1999/PkgDependency.jl/issues/5
 [#6]: https://github.com/peng1999/PkgDependency.jl/issues/6
 [#7]: https://github.com/peng1999/PkgDependency.jl/issues/7
+[#10]: https://github.com/peng1999/PkgDependency.jl/issues/10
 [#11]: https://github.com/peng1999/PkgDependency.jl/issues/11
 

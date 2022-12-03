@@ -20,11 +20,12 @@ julia> PkgDependency.tree("Tables")
 
 Unless otherwise specified, all methods of `tree` function support following kwargs:
 
-| kwarg | description |
-| --- | --- |
-| `reverse=true` | get a reverse dependency tree |
-| `compat=true` | show compat info in tree |
-| `show_link=true` | show packages' repo link in tree |
+| kwarg | default | description |
+| --- | --- | --- |
+| `reverse` | `false` | get a reverse dependency tree |
+| `compat` | `false` | show compat info in tree |
+| `show_link` | `false` | show packages' repo link in tree |
+| `dedup` | `true` | hide duplicate dependencies in tree |
 
 ## API
 
