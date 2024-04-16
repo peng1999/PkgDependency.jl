@@ -26,6 +26,7 @@ Unless otherwise specified, all methods of `tree` function support following kwa
 | `compat` | `false` | show compat info in tree |
 | `show_link` | `false` | show packages' repo link in tree |
 | `dedup` | `true` | hide duplicate dependencies in tree |
+| `stdlib` | `false` | show packages from Standard Library |
 
 ## API
 

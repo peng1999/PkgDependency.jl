@@ -10,7 +10,7 @@ function __init__()
 end
 
 """
-    tree(...; reverse=false, compat=false, show_link=false, dedup=true)
+    tree(...; reverse=false, compat=false, show_link=false, dedup=true, stdlib=false)
 
 """
 function tree end
@@ -20,7 +20,7 @@ function tree end
 
 Print dependency tree of current project. `reverse` kwarg is not supported in this method.
 """
-function tree(; compat=false, show_link=false, dedup=true)
+function tree(; compat=false, show_link=false, dedup=true, stdlib=false)
     project = Pkg.project()
     if project.ispackage
         name = something(project.name, "Unnamed Project")
@@ -31,7 +31,7 @@ function tree(; compat=false, show_link=false, dedup=true)
     end
 
     registries = check_and_get_registries(; show_link)
-    Tree(builddict(project.uuid, project; compat, registries, dedup), title="$name $version")
+    Tree(builddict(project.uuid, project; compat, registries, dedup, stdlib), title="$name $version")
 end
 
 """
@@ -39,7 +39,7 @@ end
 
 Print dependency tree of a package identified by UUID
 """
-function tree(uuid::UUID; reverse=false, compat=false, show_link=false, dedup=true)
+function tree(uuid::UUID; reverse=false, compat=false, show_link=false, dedup=true, stdlib=false)
     graph = Pkg.dependencies()
     if reverse
         revgraph = Pkg.dependencies()
@@ -59,7 +59,7 @@ function tree(uuid::UUID; reverse=false, compat=false, show_link=false, dedup=tr
 
     # registries is used to find url
     registries = check_and_get_registries(; show_link)
-    Tree(builddict(uuid, project; graph, compat, registries, dedup), title="$name v$version")
+    Tree(builddict(uuid, project; graph, compat, registries, dedup, stdlib), title="$name v$version")
 end
 
 """
@@ -110,7 +110,7 @@ compatstr(c::String) = c
 compatstr(c::Any) = c.str
 
 # returns dependencies of info as OrderedDict, or nothing when no dependencies
-function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), listed=Set{UUID}(), dedup=true, compat=false, registries=nothing)
+function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), listed=Set{UUID}(), dedup=true, compat=false, registries=nothing, stdlib=false)
     deps = info.dependencies
     compats = compat && !isnothing(uuid) ? compatinfo(uuid) : Dict()
     children = OrderedDict()
@@ -127,7 +127,7 @@ function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), li
         end
 
         subpkg = graph[uuid]
-        if isnothing(subpkg.version)
+        if isnothing(subpkg.version) && ! stdlib
             continue
         end
         postfix = uuid ∈ listed ? " (*)" : ""
@@ -136,6 +136,9 @@ function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), li
             postfix = postfix * " compat=\"$(compatstr(cinfo))\""
         end
         name = "$(subpkg.name) v$(subpkg.version)$postfix"
+        if isnothing(subpkg.version)
+            name = "$(subpkg.name) StdLib v$VERSION$postfix"
+        end
         if registries !== nothing && !isempty(link)
             name *= " ($link)"
         end
@@ -143,7 +146,7 @@ function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), li
         child = nothing
         if uuid ∉ listed
             push!(listed, uuid)
-            child = builddict(uuid, subpkg; graph, listed, compat, registries, dedup)
+            child = builddict(uuid, subpkg; graph, listed, compat, registries, dedup, stdlib)
             if !dedup
                 pop!(listed, uuid)
             end
