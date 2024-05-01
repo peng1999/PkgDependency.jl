@@ -19,13 +19,13 @@ jobs:
           os: ubuntu-latest
         - julia-version: '1.6'
           os: ubuntu-latest
-        - julia-version: '1.8'
+        - julia-version: '1.10'
           os: windows-latest
-        - julia-version: '1.8'
+        - julia-version: '1.10'
           os: macOS-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: julia-actions/setup-julia@v1
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
         with:
           version: ${{ matrix.julia-version }}
       - uses: julia-actions/julia-buildpkg@v1
@@ -36,10 +36,10 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: julia-actions/setup-julia@v1
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
         with:
-          version: '1.8'
+          version: '1.10'
       - uses: julia-actions/julia-docdeploy@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
