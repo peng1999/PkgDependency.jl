@@ -3,11 +3,8 @@ module PkgDependency
 using Pkg
 using UUIDs
 using OrderedCollections
+import AbstractTrees: children
 import Term: Tree, Theme, set_theme
-
-function __init__()
-    set_theme(Theme(tree_max_width=-1))
-end
 
 """
     tree(...; reverse=false, compat=false, show_link=false, dedup=true, stdlib=false)
@@ -31,7 +28,13 @@ function tree(; compat=false, show_link=false, dedup=true, stdlib=false)
     end
 
     registries = check_and_get_registries(; show_link)
-    Tree(builddict(project.uuid, project; compat, registries, dedup, stdlib), title="$name $version")
+    title = "$name $version"
+    Tree(
+        PkgTree(title, builddict(project.uuid, project; compat, registries, dedup, stdlib)),
+        printkeys=false,
+        maxdepth=99,
+        print_node_function=writenode
+    )
 end
 
 """
@@ -59,7 +62,13 @@ function tree(uuid::UUID; reverse=false, compat=false, show_link=false, dedup=tr
 
     # registries is used to find url
     registries = check_and_get_registries(; show_link)
-    Tree(builddict(uuid, project; graph, compat, registries, dedup, stdlib), title="$name v$version")
+    title = "$name v$version"
+    Tree(
+        PkgTree(title, builddict(uuid, project; graph, compat, registries, dedup, stdlib)),
+        printkeys=false,
+        maxdepth=99,
+        print_node_function=writenode
+    )
 end
 
 """
@@ -109,11 +118,22 @@ end
 compatstr(c::String) = c
 compatstr(c::Any) = c.str
 
+struct PkgTree
+    name::String
+    children::Vector{PkgTree}
+    is_duplicated::Bool
+
+    PkgTree(name, children, is_duplicated=false) = new(name, children, is_duplicated)
+end
+
+children(node::PkgTree) = node.children
+writenode(io, node::PkgTree) = write(io, node.name)
+
 # returns dependencies of info as OrderedDict, or nothing when no dependencies
 function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), listed=Set{UUID}(), dedup=true, compat=false, registries=nothing, stdlib=false)
     deps = info.dependencies
     compats = compat && !isnothing(uuid) ? compatinfo(uuid) : Dict()
-    children = OrderedDict()
+    children = PkgTree[]
 
     for uuid in values(deps)
         # find link
@@ -127,10 +147,11 @@ function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), li
         end
 
         subpkg = graph[uuid]
-        if isnothing(subpkg.version) && ! stdlib
+        if isnothing(subpkg.version) && !stdlib
             continue
         end
-        postfix = uuid ∈ listed ? " (*)" : ""
+        deduped = dedup && uuid ∈ listed
+        postfix = deduped ? " (*)" : ""
         cinfo = get(compats, subpkg.name, nothing)
         if !isnothing(cinfo)
             postfix = postfix * " compat=\"$(compatstr(cinfo))\""
@@ -143,15 +164,14 @@ function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), li
             name *= " ($link)"
         end
 
-        child = nothing
+        child = PkgTree[]
         if uuid ∉ listed
-            push!(listed, uuid)
-            child = builddict(uuid, subpkg; graph, listed, compat, registries, dedup, stdlib)
-            if !dedup
-                pop!(listed, uuid)
+            if dedup
+                push!(listed, uuid)
             end
+            child = builddict(uuid, subpkg; graph, listed, compat, registries, dedup, stdlib)
         end
-        push!(children, name => child)
+        push!(children, PkgTree(name, child, deduped))
     end
     children
 end

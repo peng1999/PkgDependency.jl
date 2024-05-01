@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Option to show standard library packages ([#12])
+- Upgrade to Term.jl v2.0
+
 ## [0.4.0] - 2022-12-11
 
 ### Added
@@ -61,4 +66,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#7]: https://github.com/peng1999/PkgDependency.jl/issues/7
 [#10]: https://github.com/peng1999/PkgDependency.jl/issues/10
 [#11]: https://github.com/peng1999/PkgDependency.jl/issues/11
+[#12]: https://github.com/peng1999/PkgDependency.jl/issues/12
 
