@@ -2,9 +2,8 @@ module PkgDependency
 
 using Pkg
 using UUIDs
-using OrderedCollections
 import AbstractTrees: children
-import Term: Tree, Theme, set_theme
+import Term: Tree, TERM_THEME
 
 """
     tree(...; reverse=false, compat=false, show_link=false, dedup=true, stdlib=false)
@@ -28,7 +27,8 @@ function tree(; compat=false, show_link=false, dedup=true, stdlib=false)
     end
 
     registries = check_and_get_registries(; show_link)
-    title = "$name $version"
+    title_color = TERM_THEME[].tree_title
+    title = "{$title_color}$name $version{/$title_color}"
     Tree(
         PkgTree(title, builddict(project.uuid, project; compat, registries, dedup, stdlib)),
         printkeys=false,
@@ -156,9 +156,13 @@ function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), li
         if !isnothing(cinfo)
             postfix = postfix * " compat=\"$(compatstr(cinfo))\""
         end
-        name = "$(subpkg.name) v$(subpkg.version)$postfix"
+        color_tree_keys = deduped ? TERM_THEME[].tree_skip : TERM_THEME[].tree_keys
+        name = "{$(color_tree_keys)}$(subpkg.name){/$(color_tree_keys)}"
         if isnothing(subpkg.version)
-            name = "$(subpkg.name) StdLib v$VERSION$postfix"
+            # This branch will not be entered in newer julia
+            name *= " StdLib v$VERSION$postfix"
+        else
+            name *= " v$(subpkg.version)$postfix"
         end
         if registries !== nothing && !isempty(link)
             name *= " ($link)"
