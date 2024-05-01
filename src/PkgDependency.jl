@@ -159,7 +159,6 @@ function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), li
         color_tree_keys = deduped ? TERM_THEME[].tree_skip : TERM_THEME[].tree_keys
         name = "{$(color_tree_keys)}$(subpkg.name){/$(color_tree_keys)}"
         if isnothing(subpkg.version)
-            # This branch will not be entered in newer julia
             name *= " StdLib v$VERSION$postfix"
         else
             name *= " v$(subpkg.version)$postfix"

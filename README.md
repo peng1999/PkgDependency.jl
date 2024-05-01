@@ -26,7 +26,7 @@ See [CHANGELOG.md](./CHANGELOG.md).
 
 Call `PkgDependency.tree`. Repeated dependencies are marked as `(*)`.
 
-```julia
+```console
 julia> using PkgDependency
 julia> PkgDependency.tree("CSV")
  CSV v0.10.4
