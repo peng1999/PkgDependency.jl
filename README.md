@@ -55,6 +55,36 @@ julia> PkgDependency.tree("CSV")
       └── SentinelArrays v1.3.13
 ```
 
+If you want to customize the display of the tree, you can pass extra keyword arguments
+to `PkgDependency.tree`. These will be passed on to the `Term.Trees.Tree` constructor
+and subsequently, the `AbstractTrees.print_tree` method. For example:
+
+```console
+julia> using PkgDependency
+julia> PkgDependency.tree("CSV", maxdepth=1)
+CSV 0.10.4                
+  ├─ InlineStrings v1.4.0 
+  │  ⋮                    
+  │                       
+  ├─ PooledArrays v1.4.3  
+  │  ⋮                    
+  │                       
+  ├─ WeakRefStrings v1.4.2
+  │  ⋮                    
+  │                       
+  ├─ CodecZlib v0.7.4     
+  │  ⋮                    
+  │                       
+  ├─ Tables v1.11.1       
+  │  ⋮                    
+  │                       
+  ├─ FilePathsBase v0.9.21
+  │  ⋮                    
+  │                       
+  ├─ Parsers v2.8.1 (*)   
+  └─ SentinelArrays v1.4.1
+```
+
 ## Contribution
 
 Feel free to create issues if you want more features!

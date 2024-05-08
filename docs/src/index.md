@@ -27,6 +27,7 @@ Unless otherwise specified, all methods of `tree` function support following kwa
 | `show_link` | `false` | show packages' repo link in tree |
 | `dedup` | `true` | hide duplicate dependencies in tree |
 | `stdlib` | `false` | show packages from Standard Library |
+| ... | | Any kwargs supported by [`Term.Trees.Tree`](https://fedeclaudi.github.io/Term.jl/stable/api/api_trees/#Term.Trees.Tree) and `AbstractTrees.print_tree`. |
 
 ## API
 
