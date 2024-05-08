@@ -16,7 +16,7 @@ function tree end
 
 Print dependency tree of current project. `reverse` kwarg is not supported in this method.
 """
-function tree(; compat=false, show_link=false, dedup=true, stdlib=false)
+function tree(; compat=false, show_link=false, dedup=true, stdlib=false, kwargs...)
     project = Pkg.project()
     if project.ispackage
         name = something(project.name, "Unnamed Project")
@@ -27,14 +27,8 @@ function tree(; compat=false, show_link=false, dedup=true, stdlib=false)
     end
 
     registries = check_and_get_registries(; show_link)
-    title_color = TERM_THEME[].tree_title
-    title = "{$title_color}$name $version{/$title_color}"
-    Tree(
-        PkgTree(title, builddict(project.uuid, project; compat, registries, dedup, stdlib)),
-        printkeys=false,
-        maxdepth=99,
-        print_node_function=writenode
-    )
+    deps = builddict(project.uuid, project; compat, registries, dedup, stdlib)
+    _construct_tree(name, version, deps; kwargs...)
 end
 
 """
@@ -42,7 +36,7 @@ end
 
 Print dependency tree of a package identified by UUID
 """
-function tree(uuid::UUID; reverse=false, compat=false, show_link=false, dedup=true, stdlib=false)
+function tree(uuid::UUID; reverse=false, compat=false, show_link=false, dedup=true, stdlib=false, kwargs...)
     graph = Pkg.dependencies()
     if reverse
         revgraph = Pkg.dependencies()
@@ -62,13 +56,8 @@ function tree(uuid::UUID; reverse=false, compat=false, show_link=false, dedup=tr
 
     # registries is used to find url
     registries = check_and_get_registries(; show_link)
-    title = "$name v$version"
-    Tree(
-        PkgTree(title, builddict(uuid, project; graph, compat, registries, dedup, stdlib)),
-        printkeys=false,
-        maxdepth=99,
-        print_node_function=writenode
-    )
+    deps = builddict(uuid, project; graph, compat, registries, dedup, stdlib)
+    _construct_tree(name, version, deps; kwargs...)
 end
 
 """
@@ -128,6 +117,12 @@ end
 
 children(node::PkgTree) = node.children
 writenode(io, node::PkgTree) = write(io, node.name)
+
+function _construct_tree(name::AbstractString, version::Union{AbstractString,VersionNumber}, deps::Vector{PkgTree}; kwargs...)
+    title_color = TERM_THEME[].tree_title
+    title = "{$title_color}$name $version{/$title_color}"
+    Tree(PkgTree(title, deps), printkeys=false, print_node_function=writenode; kwargs...)
+end
 
 # returns dependencies of info as OrderedDict, or nothing when no dependencies
 function builddict(uuid::Union{Nothing,UUID}, info; graph=Pkg.dependencies(), listed=Set{UUID}(), dedup=true, compat=false, registries=nothing, stdlib=false)
