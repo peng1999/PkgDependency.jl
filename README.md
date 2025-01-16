@@ -1,6 +1,7 @@
 # PkgDependency.jl
 
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://peng1999.github.io/PkgDependency.jl/dev/)
+[<img src="https://api.gitsponsors.com/api/badge/img?id=350648283" height="20">](https://api.gitsponsors.com/api/badge/link?p=BpZDbaL0151U6iZJUHxvEMbgK+dYmgDI/CO5BAwdmTGpPFwDRssVoBzwAJLCRkPzrdo38qJCBfMQotYhKMgVuWzCM4fL6mqkKYvaCYLGGPhguMs59IYkknNiPbYgjGlx3TzpTcfpGwwDYEyOpFAIsA==)
 
 Print dependency tree of a project or package.
 
